@@ -12,7 +12,7 @@ import createInitialSequence from "./utils/createInitialSequence";
 import addPromiseOption from "./utils/addPromiseOption";
 
 function genbankToJson(string, onFileParsedUnwrapped, options) {
-  const onFileParsed = function(sequences, options) {
+  const onFileParsed = (sequences, options) => {
     //before we call the onFileParsed callback, we need to flatten the sequence, and convert the old sequence data to the new data type
     const sequenceData = validateSequenceArray(
       flattenSequenceArray(sequences, options),
@@ -74,7 +74,7 @@ function genbankToJson(string, onFileParsedUnwrapped, options) {
     }
     let hasFoundLocus = false;
 
-    lines.some(function(line) {
+    lines.some(line => {
       if (line === null) {
         return true; //break the some loop
       }
@@ -426,7 +426,7 @@ function genbankToJson(string, onFileParsedUnwrapped, options) {
   function parseFeatureLocation(locStr, options) {
     locStr = locStr.trim();
     const locArr = [];
-    locStr.replace(/(\d+)/g, function(string, match) {
+    locStr.replace(/(\d+)/g, (string, match) => {
       locArr.push(match);
     });
     for (let i = 0; i < locArr.length; i += 2) {

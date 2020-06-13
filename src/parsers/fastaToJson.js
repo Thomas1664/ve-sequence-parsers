@@ -12,7 +12,7 @@ import addPromiseOption from './utils/addPromiseOption';
 
 
 function fastaToJson(fileString, onFileParsedUnwrapped, options) {
-    const onFileParsed = function(sequences) { //before we call the onFileParsed callback, we want to validate it
+    const onFileParsed = sequences => { //before we call the onFileParsed callback, we want to validate it
         onFileParsedUnwrapped(validateSequenceArray(sequences, options));
     };
     let resultArray = [];
