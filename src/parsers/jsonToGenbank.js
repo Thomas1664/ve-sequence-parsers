@@ -205,8 +205,7 @@ function createGenbankLocus(serSeq, options) {
 }
 
 function getCurrentDateString() {
-  let date = new Date();
-  date = date.toString().split(" ");
+  const date = new Date().toString().split(" ");
   const day = date[2];
   const month = date[1].toUpperCase();
   const year = date[3];
