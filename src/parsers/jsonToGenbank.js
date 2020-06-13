@@ -7,44 +7,44 @@ import pragmasAndTypes from "./utils/pragmasAndTypes.js";
 import { featureColors } from "ve-sequence-utils";
 const StringUtil = {
   /** Trims white space at beginning and end of string
-   * @param {String} line
-   * @returns {String} line
+   * @param {string} line
+   * @returns {string} line
    */
-  trim: function(line) {
+  trim: line => {
     return line.replace(/^\s+|\s+$/g, "");
   },
 
   /** Trims white space at beginning string
-   * @param {String} line
-   * @returns {String} line
+   * @param {string} line
+   * @returns {string} line
    */
-  ltrim: function(line) {
+  ltrim: line => {
     return line.replace(/^\s+/, "");
   },
 
   /** Trims white space at end of string
-   * @param {String} line
-   * @returns {String} line
+   * @param {string} line
+   * @returns {string} line
    */
-  rtrim: function(line) {
+  rtrim: line => {
     return line.replace(/\s+$/, "");
   },
 
   /** Pads white space at beginning of string
-   * @param {String} line
-   * @returns {String} line
+   * @param {string} line
+   * @returns {string} line
    */
-  lpad: function(line, padString, length) {
+  lpad: (line, padString, length) => {
     let str = line;
     while (str.length < length) str = padString + str;
     return str;
   },
 
   /** Pads white space at end of string
-   * @param {String} line
-   * @returns {String} line
+   * @param {string} line
+   * @returns {string} line
    */
-  rpad: function(line, padString, length) {
+  rpad: (line, padString, length) => {
     let str = line;
     while (str.length < length) str = str + padString;
     return str;
@@ -59,7 +59,7 @@ function cutUpStr(val, start, end) {
   return val.slice(start, end);
 }
 
-export default function(_serSeq, options) {
+export default (_serSeq, options) => {
   options = options || {};
   options.reformatSeqName = options.reformatSeqName !== false;
   const serSeq = cloneDeep(_serSeq);
@@ -85,7 +85,7 @@ export default function(_serSeq, options) {
       lines = lines.concat(serSeq.extraLines);
     }
     if (serSeq.comments) {
-      serSeq.comments.forEach(function(comment) {
+      serSeq.comments.forEach(comment => {
         lines.push("COMMENT             " + comment);
       });
     }
@@ -116,7 +116,7 @@ export default function(_serSeq, options) {
     );
 
     let printedFeatureHeader;
-    each(serSeq.features, function(feat, index) {
+    each(serSeq.features, (feat, index) => {
       if (!printedFeatureHeader) {
         printedFeatureHeader = true;
         lines.push("FEATURES             Location/Qualifiers");
@@ -281,10 +281,10 @@ function featureToGenbankString(feat, options) {
           notes = {}; //set the notes to a blank object
         }
       }
-      Object.keys(notes).forEach(function(key) {
+      Object.keys(notes).forEach(key => {
         if (key === "color" || key === "labelColor") return; //we'll handle this below
         if (notes[key] instanceof Array) {
-          notes[key].forEach(function(value) {
+          notes[key].forEach(value => {
             lines.push(featureNoteInDataToGenbankString(key, value));
           });
         } else {

@@ -3,8 +3,8 @@
 export default {
 	/**
 	 * Reformat name to replaces whitespace with underscores.
-	 * @param {String} pName
-	 * @returns {String} New name.
+	 * @param  pName
+	 * @returns  New name.
 	 */
 	reformatName: function(pName) {
 		return pName.toString().replace(/ /g, '_');
