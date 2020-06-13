@@ -2,8 +2,8 @@ import chai from "chai";
 import jsonToBed from "../parsers/jsonToBed";
 
 chai.should();
-describe("json to bed parser", function() {
-  it("should convert json seq to bed format", function() {
+describe("json to bed parser", () => {
+  it("should convert json seq to bed format", () => {
     const jsonInfo = {
       name: "testseq",
       sequence: "agagtagacgattgaccaggtttagag",
@@ -25,7 +25,7 @@ describe("json to bed parser", function() {
     // testseq||27|linear	2	7	misc_feature	1000	-	2	7	65,105,225
     // testseq||27|linear	8	21	misc_feature	1000	-	8	21	65,105,225");
   });
-  it("should convert json seq (without sequence, features only) to bed format", function() {
+  it("should convert json seq (without sequence, features only) to bed format", () => {
     const jsonInfo = {
       name: "testseq",
       features: [

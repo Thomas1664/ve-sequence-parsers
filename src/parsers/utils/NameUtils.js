@@ -6,7 +6,7 @@ export default {
 	 * @param {string} pName
 	 * @returns {string} New name.
 	 */
-	reformatName: function(pName) {
+	reformatName: pName => {
 		return pName.toString().replace(/ /g, '_');
 	},
 };

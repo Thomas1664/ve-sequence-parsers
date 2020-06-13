@@ -7,7 +7,7 @@ export default function validateSequenceArray(parsingResultArray, options) {
             parsingResultArray = [parsingResultArray];
         }
         //should convert the old data type to the new data type (flattened sequence)
-        parsingResultArray.forEach(function(parsingResult) {
+        parsingResultArray.forEach(parsingResult => {
             if (parsingResult.success) {
                 const res = validateSequence(parsingResult.parsedSequence, options);
                 //add any validation error messages to the parsed sequence results messages

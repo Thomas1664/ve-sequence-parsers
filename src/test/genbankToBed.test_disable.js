@@ -5,8 +5,8 @@ import genbankToJson from '../parsers/genbankToJson';
 import jsonToBed from '../parsers/jsonToBed';
 
 chai.should();
-describe("testing genbank to json to bed file format", function() {
-  it("should correctly make a bed file", async function() {
+describe("testing genbank to json to bed file format", () => {
+  it("should correctly make a bed file", async () => {
     const genbankInfo = fs.readFileSync(path.join(__dirname, './testData/genbank/AcsBmut-3pCRISPRi-242.gb'), "utf8");
     const jsonInfo = await genbankToJson(genbankInfo);
     const bedInfo = await jsonToBed(jsonInfo);

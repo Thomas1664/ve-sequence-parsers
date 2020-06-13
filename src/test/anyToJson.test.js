@@ -13,49 +13,49 @@ chai.use(require('chai-things'));
 
 chai.should();
 
-describe('anyToJsonPromise', function() {
-    it('should do the same thing as anyToJson but have a standard promise interface', async function(done) {
+describe('anyToJsonPromise', () => {
+    it('should do the same thing as anyToJson but have a standard promise interface', async done => {
         const results = await anyToJson(fs.readFileSync(path.join(__dirname, './testData/pBbS0c-RFP_no_name.txt'), "utf8"), {fileName: 'pBbS0c-RFP_no_name.txt', isProtein: false});    
         results[0].parsedSequence.sequence.length.should.equal(4224)
         results[0].parsedSequence.name.should.equal('pBbS0c-RFP_no_name')
         done();
     })
 })
-describe('anyToJson', function() {
-    it('parses a simple .txt file as fasta', function(done) {
-        anyToJson(fs.readFileSync(path.join(__dirname, './testData/pBbS0c-RFP_no_name.txt'), "utf8"), function(result) {
+describe('anyToJson', () => {
+    it('parses a simple .txt file as fasta', done => {
+        anyToJson(fs.readFileSync(path.join(__dirname, './testData/pBbS0c-RFP_no_name.txt'), "utf8"), result => {
             result[0].parsedSequence.sequence.length.should.equal(4224)
             result[0].parsedSequence.circular.should.equal(true)
             result[0].parsedSequence.name.should.equal('pBbS0c-RFP_no_name')
             done();
         }, {fileName: 'pBbS0c-RFP_no_name.txt', parseFastaAsCircular: true, isProtein: false});    
     });
-    it('handles parseFastaAsCircular=true', function(done) {
-        anyToJson(">simpleFasta \n gatggagagag", function(result) {
+    it('handles parseFastaAsCircular=true', done => {
+        anyToJson(">simpleFasta \n gatggagagag", result => {
             result[0].parsedSequence.sequence.length.should.equal(11)
             result[0].parsedSequence.circular.should.equal(true)
             result[0].parsedSequence.name.should.equal('simpleFasta')
             done();
         }, {parseFastaAsCircular: true, isProtein: false});    
     });
-    it('parse in an ab1 file without failing :)', function(done) {
+    it('parse in an ab1 file without failing :)', done => {
         const fileObj = fs.readFileSync(path.join(__dirname, './testData/ab1/example1.ab1'));
-        ab1ToJson(fileObj, function(result) {
+        ab1ToJson(fileObj, result => {
             result[0].parsedSequence.name.should.equal("example1");
             result[0].parsedSequence.chromatogramData.should.deep.equal(example1OutputChromatogram);
             result[0].parsedSequence.sequence.should.equal("NANTCTATAGGCGAATTCGAGCTCGGTACCCGGGGATCCTCTAGAGTCGACCTGCAGGCATGCAAGCTTGAGTATTCTATAGTGTCACCTAAATAGCTTGGCGTAATCATGGTCATAGCTGTTTCCTGTGTGAAATTGTTATCCGCTCACAATTCCACACAACATACGAGCCGGAAGCATAAAGTGTAAAGCCTGGGGTGCCTAATGAGTGAGCTAACTCACATTAATTGCGTTGCGCTCACTGCCCGCTTTCCAGTCGGGAAACCTGTCGTGCCAGCTGCATTAATGAATCGGCCAACGCGCGGGGAGAGGCGGTTTGCGTATTGGGCGCTCTTCCGCTTCCTCGCTCACTGACTCGCTGCGCTCGGTCGTTCGGCTGCGGCGAGCGGTATCAGCTCACTCAAAGGCGGTAATACGGTTATCCACAGAATCAGGGGATAACGCAGGAAAGAACATGTGAGCAAAAGGCCAGCAAAAGGCCAGGAACCGTAAAAAGGCCGCGTTGCTGGCGTTTTTCCATAGGCTCCGCCCCCCTGACGAGCATCACAAAAATCGACGCTCAAGTCAGAGGTGGCGAAACCCGACAGGACTATAAAGATACCAGGCGTTTCCCCCTGGAAGCTCCCTCGTGCGCTCTCCTGTTCCGACCCTGCCGCTTACCGGATACCTGTCCGCCTTTCTCCCTTCGGGAAGCGTGGCGCTTTCTCATAGCTCACGCTGTAGGTATCTCAGTTCGGTGTAGGTCGTTCGCTCCAAGCTGGGCTGTGTGCACGAACCCCCCGTTCAGCCCGACCGCTGCGCCTTATCCGGTAACTATCGTCTTGAGTCCAACCCGGTAAGACACGACTTATCGCCACTGGCAGCAGCCACTGGTAACAGGATTAGCAGAGCGAGGTATGTAGGCGGTGCTACAGAGTTCTTGAAGTGGTGGCCTAACTACGGCTACACTAGAAGAACAGTATTTGGTATCTGCGCTCTGCTGAAGCCAGTTACCTTCGGAAAAAGAGTTGGTAGCTCTNGATCCGGCAACAACCACCGCTGGTAGCGGNGGTTTTTTGTTNGCAAGCAGCANATTACNCNCAAAAAAAAANGATCTCAANAAAATCCTTNGATNTTTTNNACGGGGNCTGACNCTNAGGGNAAAAAAACTCCCNTTAAGGGATTTNGNCNTGAANTTTNAAAAAGANNTTNCCCNAAAACNNTTNAATTAAAAAAANNTTTAAACNNCCNAAAAATTTNNAAAAAATTGNGGGGAANNNCCAGGNTTTNNTNGGGGGGCCCTNCCCCNNNGGGGTTTTTTTNCCCAAANGNGGCCCCCCCCCNGGNAAAAAAAANAANNGGGGNN");
             done();
         }, {fileName: "example1.ab1"});
     });
-    it('parses a .fasta file without a name and use the file name', function(done) {
-        anyToJson(fs.readFileSync(path.join(__dirname, './testData/pBbS0c-RFP_no_name.fasta'), "utf8"), function(result) {
+    it('parses a .fasta file without a name and use the file name', done => {
+        anyToJson(fs.readFileSync(path.join(__dirname, './testData/pBbS0c-RFP_no_name.fasta'), "utf8"), result => {
             result[0].parsedSequence.name.should.equal('pBbS0c-RFP_no_name')
             done();
         }, {fileName: 'pBbS0c-RFP_no_name.fasta', isProtein: false});    
     });
-    it('should call the success callback for a .txt file only once', function(done) {
+    it('should call the success callback for a .txt file only once', done => {
         let times = 0
-        anyToJson(fs.readFileSync(path.join(__dirname, './testData/pBbS0c-RFP_no_name.txt'), "utf8"), function() {
+        anyToJson(fs.readFileSync(path.join(__dirname, './testData/pBbS0c-RFP_no_name.txt'), "utf8"), () => {
             times++
         }, {fileName: 'pBbS0c-RFP_no_name.txt'});    
         setTimeout(function () {
@@ -63,9 +63,9 @@ describe('anyToJson', function() {
             done();
         })
     });
-    it('should call the success callback for an ambiguously named file only once', function(done) {
+    it('should call the success callback for an ambiguously named file only once', done => {
         let times = 0
-        anyToJson(fs.readFileSync(path.join(__dirname, './testData/pBbS0c-RFP_no_name.gb'), "utf8"), function() {
+        anyToJson(fs.readFileSync(path.join(__dirname, './testData/pBbS0c-RFP_no_name.gb'), "utf8"), () => {
             times++
         }, {fileName: 'pBbS0c-RFP', isProtein: false});    
         setTimeout(function () {
@@ -73,7 +73,7 @@ describe('anyToJson', function() {
             done();
         })
     });
-    it('parses the pBbE0c-RFP plasmid represented in various filetypes to the same end result', function(done) {
+    it('parses the pBbE0c-RFP plasmid represented in various filetypes to the same end result', done => {
         const options = {
             fastaFilePath: "pBbE0c-RFP.fasta",
             genbankFilePath: 'pBbE0c-RFP.gb',
@@ -87,7 +87,7 @@ describe('anyToJson', function() {
             done()
         })
     })
-    // it('parses the pBbS0c-RFP plasmid represented in various filetypes to the same end result', function(done) {
+    // it('parses the pBbS0c-RFP plasmid represented in various filetypes to the same end result', done => {
     //     const options = {
     //         fastaFilePath: "pBbS0c-RFP.fasta",
     //         genbankFilePath: 'pBbS0c-RFP.gb',
@@ -102,24 +102,24 @@ function runTest(done, options) {
     let genbankResult;
     let sbolXMLResult;
     async.series([
-            function(done) {
+            done => {
                 const string = fs.readFileSync(path.join(__dirname, './testData/', options.fastaFilePath), "utf8");
-                anyToJson(string, function(result) {
+                anyToJson(string, result => {
                     fastaResult = result;
                     done();
                 }, {fileName: options.fastaFilePath, isProtein: false});
             },
-            function(done) {
+            done => {
                 const string = fs.readFileSync(path.join(__dirname, './testData/', options.genbankFilePath), "utf8");
-                anyToJson(string, function(result) {
+                anyToJson(string, result => {
                     genbankResult = result;
                     done();
                 }, {fileName: options.genbankFilePath, isProtein: false});
             },
 
-            function(done) {
+            done => {
                 const string = fs.readFileSync(path.join(__dirname, './testData/', options.sbolFilePath), "utf8");
-                anyToJson(string, function(result) {
+                anyToJson(string, result => {
                     sbolXMLResult = result;
                     done();
                 }, {fileName: options.sbolFilePath, isProtein: false});
@@ -134,8 +134,8 @@ function runTest(done, options) {
             //sbolXml to genbank check
             //can't make checks for circularity because sbol sequences are assumed to be linear
             // assert(sbolXMLResult[0].parsedSequence.circular === genbankResult[0].parsedSequence.circular);
-            sbolXMLResult[0].parsedSequence.features.forEach(function(feat1) {
-                assert(genbankResult[0].parsedSequence.features.filter(function(feat2) {
+            sbolXMLResult[0].parsedSequence.features.forEach(feat1 => {
+                assert(genbankResult[0].parsedSequence.features.filter(feat2 => {
                     //can't make checks for start or end because features are split on the origin in sbol
                     if (feat1.name === feat2.name) {
                         if (feat1.name === "RFP cassette") return true //this feature is not specified in SBOL

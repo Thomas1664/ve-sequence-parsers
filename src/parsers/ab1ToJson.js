@@ -140,7 +140,7 @@ function abConverter(inputArrayBuffer) {
     return name;
   };
 
-  this.getDataTag = function(inTag) {
+  this.getDataTag = inTag => {
     let output;
     let curElem = dirLocation;
     do {
@@ -157,7 +157,7 @@ function abConverter(inputArrayBuffer) {
     return output;
   };
 
-  this.getTraceData = function() {
+  this.getTraceData = () => {
     const traceData = {};
     traceData.aTrace = this.getDataTag(tagDict.colorDataA);
     traceData.tTrace = this.getDataTag(tagDict.colorDataT);

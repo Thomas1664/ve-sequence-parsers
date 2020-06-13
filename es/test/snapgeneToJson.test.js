@@ -11,15 +11,15 @@ chai.use(require("chai-things"));
 chai.use(chaiSubset);
 chai.should();
 
-describe("snapgene file parser", function() {
-  it("linear dna w/feature on forward strand", function(done) {
+describe("snapgene file parser", () => {
+  it("linear dna w/feature on forward strand", done => {
     const fileObj = fs.readFileSync(
       path.join(__dirname, "./testData/dna/GFPuv_025_fwdfeature_linear.dna")
       // path.join(__dirname, "./testData/dna/GFPuv_025_fwdfeature_linear.dna"),
     );
     snapgeneToJson(
       fileObj,
-      function(result) {
+      result => {
         result[0].parsedSequence.name.should.equal(
           "GFPuv_025_fwdfeature_linear"
         );
@@ -44,13 +44,13 @@ describe("snapgene file parser", function() {
       }
     );
   });
-  it("circular dna w/feature on forward strand", function(done) {
+  it("circular dna w/feature on forward strand", done => {
     const fileObj = fs.readFileSync(
       path.join(__dirname, "./testData/dna/GFPuv_025_fwdfeature_circular.dna")
     );
     snapgeneToJson(
       fileObj,
-      function(result) {
+      result => {
         result[0].parsedSequence.name.should.equal(
           "GFPuv_025_fwdfeature_circular"
         );
@@ -74,13 +74,13 @@ describe("snapgene file parser", function() {
       }
     );
   });
-  it("linear dna w/feature on reverse strand", function(done) {
+  it("linear dna w/feature on reverse strand", done => {
     const fileObj = fs.readFileSync(
       path.join(__dirname, "./testData/dna/GFPuv_025_revfeature_linear.dna")
     );
     snapgeneToJson(
       fileObj,
-      function(result) {
+      result => {
         result[0].parsedSequence.name.should.equal(
           "GFPuv_025_revfeature_linear"
         );
@@ -105,13 +105,13 @@ describe("snapgene file parser", function() {
       }
     );
   });
-  it("circular dna w/feature on reverse strand", function(done) {
+  it("circular dna w/feature on reverse strand", done => {
     const fileObj = fs.readFileSync(
       path.join(__dirname, "./testData/dna/GFPuv_025_revfeature_circular.dna")
     );
     snapgeneToJson(
       fileObj,
-      function(result) {
+      result => {
         result[0].parsedSequence.name.should.equal(
           "GFPuv_025_revfeature_circular"
         );

@@ -18,7 +18,7 @@ async function snapgeneToJson(
 ) {
   /* eslint-enable no-inner-declarations*/
 
-  const onFileParsed = function(sequences, options) {
+  const onFileParsed = (sequences, options) => {
     //before we call the onFileParsed callback, we need to flatten the sequence, and convert the old sequence data to the new data type
     onFileParsedUnwrapped(
       validateSequenceArray(flattenSequenceArray(sequences, options), options)

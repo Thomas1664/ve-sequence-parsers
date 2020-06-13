@@ -12,7 +12,7 @@ chai.use(chaiSubset);
 chai.use(require("chai-things"));
 chai.should();
 
-describe("genbankToJson tests", function() {
+describe("genbankToJson tests", () => {
   it(`parses out the DIVISION property correctly https://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html#GenBankDivisionB`, done => {
     const string = `LOCUS       ProteinSeq          10 bp    DNA  linear  PLN  04-MAR-2019
 ORIGIN      
@@ -20,7 +20,7 @@ ORIGIN
 //`;
     genbankToJson(
       string,
-      function(result) {
+      result => {
         result[0].parsedSequence.name.should.equal("ProteinSeq");
         result[0].parsedSequence.gbDivision.should.equal("PLN");
         result[0].parsedSequence.type.should.equal("DNA");
@@ -43,7 +43,7 @@ ORIGIN
 //`;
     genbankToJson(
       string,
-      function(result) {
+      result => {
         result[0].parsedSequence.name.should.equal("ProteinSeq");
         result[0].parsedSequence.type.should.equal("DNA");
         // result[0].parsedSequence.isProtein.should.be.
@@ -63,7 +63,7 @@ ORIGIN
 //`;
     genbankToJson(
       string,
-      function(result) {
+      result => {
         result[0].parsedSequence.name.should.equal("Untitled_Sequence");
         result[0].parsedSequence.type.should.equal("PROTEIN");
         result[0].parsedSequence.isProtein.should.equal(true);
@@ -77,7 +77,7 @@ ORIGIN
     );
   });
 
-  it("handles joined features/parts correctly", function(done) {
+  it("handles joined features/parts correctly", done => {
     const string = fs.readFileSync(
       path.join(
         __dirname,
@@ -87,7 +87,7 @@ ORIGIN
     );
     genbankToJson(
       string,
-      function(result) {
+      result => {
         result[0].parsedSequence.features.should.containSubset([
           {
             name: "reg_elem",
@@ -113,34 +113,34 @@ ORIGIN
       }
     );
   });
-  it("parses the sequence definition field", function(done) {
+  it("parses the sequence definition field", done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/genbank/pRF127_GanBankStandard.gb"),
       "utf8"
     );
-    genbankToJson(string, function(result) {
+    genbankToJson(string, result => {
       result[0].parsedSequence.definition.should.equal(
         "synthetic circular DNA"
       );
       done();
     });
   });
-  it("does not give an erroneous feature name too long warning", function(done) {
+  it("does not give an erroneous feature name too long warning", done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/genbank/pRF127_GanBankStandard.gb"),
       "utf8"
     );
-    genbankToJson(string, function(result) {
+    genbankToJson(string, result => {
       result[0].messages.length.should.equal(0);
       done();
     });
   });
-  it("truncates a feature that runs off the end to the end instead of to 0", function(done) {
+  it("truncates a feature that runs off the end to the end instead of to 0", done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/genbank/gbWithWrappingFeature.gb"),
       "utf8"
     );
-    genbankToJson(string, function(result) {
+    genbankToJson(string, result => {
       result.should.be.an("array");
       result[0].success.should.be.true;
       result[0].parsedSequence.size.should.equal(103);
@@ -154,7 +154,7 @@ ORIGIN
       done();
     });
   });
-  it("handles parsing of a protein genbank correctly, making sure not to have too long of feature names", function(done) {
+  it("handles parsing of a protein genbank correctly, making sure not to have too long of feature names", done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/genbank/proteinTestSeq1.gp"),
       "utf8"
@@ -162,11 +162,11 @@ ORIGIN
     const options = { isProtein: true };
     genbankToJson(
       string,
-      function(result) {
+      result => {
         result.should.be.an("array");
         result[0].success.should.be.true;
         result[0].parsedSequence.type.should.equal("PROTEIN");
-        result[0].parsedSequence.features.forEach(function(feat) {
+        result[0].parsedSequence.features.forEach(feat => {
           feat.name.length.should.be.below(101);
         });
         done();
@@ -174,7 +174,7 @@ ORIGIN
       options
     );
   });
-  it("handles parsing of a protein genbank that only has DNA chars", function(done) {
+  it("handles parsing of a protein genbank that only has DNA chars", done => {
     const string = fs.readFileSync(
       path.join(
         __dirname,
@@ -185,7 +185,7 @@ ORIGIN
     const options = { isProtein: true };
     genbankToJson(
       string,
-      function(result) {
+      result => {
         result.should.be.an("array");
         result[0].success.should.be.true;
         result[0].parsedSequence.type.should.equal("PROTEIN");
@@ -194,7 +194,7 @@ ORIGIN
       options
     );
   });
-  it("handles parsing of a protein genbank correctly", function(done) {
+  it("handles parsing of a protein genbank correctly", done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/sequence.gp"),
       "utf8"
@@ -202,7 +202,7 @@ ORIGIN
     const options = { isProtein: true };
     genbankToJson(
       string,
-      function(result) {
+      result => {
         result.should.be.an("array");
         result[0].success.should.be.true;
         result[0].parsedSequence.features.should.be.length(4);
@@ -223,7 +223,7 @@ ORIGIN
       options
     );
   });
-  it("handles 1-based feature indices option for both start and end", function(done) {
+  it("handles 1-based feature indices option for both start and end", done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/pBbS0c-RFP.gb"),
       "utf8"
@@ -231,7 +231,7 @@ ORIGIN
     const options = { inclusive1BasedEnd: true, inclusive1BasedStart: true };
     genbankToJson(
       string,
-      function(result) {
+      result => {
         result.should.be.an("array");
         result[0].success.should.be.true;
         result[0].parsedSequence.features.should.include.something.that.deep.equals(
@@ -256,12 +256,12 @@ ORIGIN
       options
     );
   });
-  it("handles parsing of an oddly spaced genbank without failing", function(done) {
+  it("handles parsing of an oddly spaced genbank without failing", done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/breakingGenbank.gb"),
       "utf8"
     );
-    genbankToJson(string, function(result) {
+    genbankToJson(string, result => {
       result.should.be.an("array");
       result[0].success.should.be.true;
       result[0].parsedSequence.features.should.be.length(13);
@@ -289,12 +289,12 @@ ORIGIN
     });
   });
 
-  it("parses a genbank with just feature start locations correctly", function(done) {
+  it("parses a genbank with just feature start locations correctly", done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/rhaBp-Pfu-pUN_alt.gb"),
       "utf8"
     );
-    genbankToJson(string, function(result) {
+    genbankToJson(string, result => {
       result.should.be.an("array");
       result[0].success.should.be.true;
       result[0].parsedSequence.features.should.containSubset([
@@ -313,12 +313,12 @@ ORIGIN
     });
   });
 
-  it("parses a genbank that is implicitly non-circular as circular because it contains circular features", function(done) {
+  it("parses a genbank that is implicitly non-circular as circular because it contains circular features", done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/Ecoli_DERA_Implicitly_Circular.gb"),
       "utf8"
     );
-    genbankToJson(string, function(result) {
+    genbankToJson(string, result => {
       result.should.be.an("array");
       result[0].success.should.be.true;
       result[0].parsedSequence.circular.should.equal(true);
@@ -333,12 +333,12 @@ ORIGIN
     });
   });
 
-  it("parses a genbank that is implicitly linear and has no circular features as linear", function(done) {
+  it("parses a genbank that is implicitly linear and has no circular features as linear", done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/Ecoli_DERA_Implicitly_Linear.gb"),
       "utf8"
     );
-    genbankToJson(string, function(result) {
+    genbankToJson(string, result => {
       result.should.be.an("array");
       result[0].success.should.be.true;
       result[0].parsedSequence.circular.should.equal(false);
@@ -346,12 +346,12 @@ ORIGIN
     });
   });
 
-  it("handles feature names with = signs in them (doesn't truncate them before the equal sign)", function(done) {
+  it("handles feature names with = signs in them (doesn't truncate them before the equal sign)", done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/genbankFeatWithEqualSignInIt.gb"),
       "utf8"
     );
-    genbankToJson(string, function(result) {
+    genbankToJson(string, result => {
       result.should.be.an("array");
       result[0].success.should.be.true;
       result[0].parsedSequence.features.should.containSubset([{
@@ -361,12 +361,12 @@ ORIGIN
     });
   });
 
-  it("parses plasmid with run-on feature note (pBbS0c-RFP.gb) correctly", function(done) {
+  it("parses plasmid with run-on feature note (pBbS0c-RFP.gb) correctly", done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/pBbS0c-RFP.gb"),
       "utf8"
     );
-    genbankToJson(string, function(result) {
+    genbankToJson(string, result => {
       result[0].parsedSequence.features.should.include.something.that.deep.equals(
         {
           notes: {
@@ -392,12 +392,12 @@ ORIGIN
       done();
     });
   });
-  it("parses pBbE0c-RFP.gb correctly", function(done) {
+  it("parses pBbE0c-RFP.gb correctly", done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/pBbE0c-RFP.gb"),
       "utf8"
     );
-    genbankToJson(string, function(result) {
+    genbankToJson(string, result => {
       result.should.be.an("array");
       result.should.be.length(1);
       result[0].parsedSequence.features.should.be.length(4);
@@ -423,30 +423,30 @@ ORIGIN
       done();
     });
   });
-  it("handles parsing of a multi-seq genbank correctly", function(done) {
+  it("handles parsing of a multi-seq genbank correctly", done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/multi-seq-genbank.gb"),
       "utf8"
     );
-    genbankToJson(string, function(result) {
+    genbankToJson(string, result => {
       result.should.be.an("array");
       result.should.be.length(4);
       result[0].parsedSequence.features.should.be.length(0);
       result[0].parsedSequence.size.should.equal(109);
 
-      result.forEach(function(innerResult) {
+      result.forEach(innerResult => {
         innerResult.success.should.be.true;
       });
       done();
     });
   });
 
-  it("parses a gb with features of type primer, outputs json w/primers at top level by default", function(done) {
+  it("parses a gb with features of type primer, outputs json w/primers at top level by default", done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/genbank/testing_primers.gb"),
       "utf8"
     );
-    genbankToJson(string, function(result) {
+    genbankToJson(string, result => {
       result.should.be.an("array");
       result.should.be.length(1);
       result[0].parsedSequence.features.should.be.length(2);
@@ -488,14 +488,14 @@ ORIGIN
         }
       ]);
 
-      result.forEach(function(innerResult) {
+      result.forEach(innerResult => {
         innerResult.success.should.be.true;
       });
       done();
     });
   });
 
-  it("parses a gb with features of type primer, outputs json w/primers as features of type primer because primersAsFeatures = true", function(done) {
+  it("parses a gb with features of type primer, outputs json w/primers as features of type primer because primersAsFeatures = true", done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/genbank/testing_primers.gb"),
       "utf8"
@@ -503,7 +503,7 @@ ORIGIN
     const options = { primersAsFeatures: true };
     genbankToJson(
       string,
-      function(result) {
+      result => {
         result.should.be.an("array");
         result.should.be.length(1);
         result[0].parsedSequence.features.should.be.length(4);
@@ -542,7 +542,7 @@ ORIGIN
           }
         ]);
 
-        result.forEach(function(innerResult) {
+        result.forEach(innerResult => {
           innerResult.success.should.be.true;
         });
         done();
@@ -551,12 +551,12 @@ ORIGIN
     );
   });
 
-  it("parses a multi-seq gb with features of type primer, outputs json w/primers at top level by default", function(done) {
+  it("parses a multi-seq gb with features of type primer, outputs json w/primers at top level by default", done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/genbank/testing_primers_multiseq.gb"),
       "utf8"
     );
-    genbankToJson(string, function(result) {
+    genbankToJson(string, result => {
       result.should.be.an("array");
       result.should.be.length(2);
       result[0].parsedSequence.features.should.be.length(2);
@@ -564,14 +564,14 @@ ORIGIN
       result[1].parsedSequence.features.should.be.length(2);
       result[1].parsedSequence.primers.should.be.length(2);
 
-      result.forEach(function(innerResult) {
+      result.forEach(innerResult => {
         innerResult.success.should.be.true;
       });
       done();
     });
   });
 
-  it("parses a multi-seq gb with features of type primer, outputs json w/primers as features of type primer because primersAsFeatures = true", function(done) {
+  it("parses a multi-seq gb with features of type primer, outputs json w/primers as features of type primer because primersAsFeatures = true", done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/genbank/testing_primers_multiseq.gb"),
       "utf8"
@@ -579,13 +579,13 @@ ORIGIN
     const options = { primersAsFeatures: true };
     genbankToJson(
       string,
-      function(result) {
+      result => {
         result.should.be.an("array");
         result.should.be.length(2);
         result[0].parsedSequence.features.should.be.length(4);
         result[1].parsedSequence.features.should.be.length(4);
 
-        result.forEach(function(innerResult) {
+        result.forEach(innerResult => {
           innerResult.success.should.be.true;
         });
         done();
@@ -594,12 +594,12 @@ ORIGIN
     );
   });
 
-  it("parses pj5_00001 aka testGenbankFile.gb correctly", function(done) {
+  it("parses pj5_00001 aka testGenbankFile.gb correctly", done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/genbank/testGenbankFile.gb"),
       "utf8"
     );
-    genbankToJson(string, function(result) {
+    genbankToJson(string, result => {
       result[0].parsedSequence.name.should.equal("pj5_00001");
       result[0].parsedSequence.circular.should.equal(true);
       result[0].parsedSequence.extraLines.length.should.equal(2);
@@ -620,25 +620,25 @@ ORIGIN
       done();
     });
   });
-  it("parses a .gb file where the feature name is a number", function(done) {
+  it("parses a .gb file where the feature name is a number", done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/genbank/featNameIsNumber.gb"),
       "utf8"
     );
-    genbankToJson(string, function(result) {
+    genbankToJson(string, result => {
       result.should.be.an("array");
       result[0].success.should.be.true;
       done();
     });
   });
-  it('takes in a snapgene exported sequence and sets its name correctly (instead of "Export" it will use the filename)', function(done) {
+  it('takes in a snapgene exported sequence and sets its name correctly (instead of "Export" it will use the filename)', done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/genbank/CCR5_multifrag_insert1.gb"),
       "utf8"
     );
     genbankToJson(
       string,
-      function(result) {
+      result => {
         result.should.be.an("array");
         result[0].success.should.be.true;
         result[0].parsedSequence.name.should.equal("CCR5_multifrag_insert1");
@@ -647,14 +647,14 @@ ORIGIN
       { fileName: "CCR5_multifrag_insert1.gb" }
     );
   });
-  it("if splitLocations=true, it parses a .gb file with joined features (aka a single feature with multiple locations) and splits them into multiple individaul features", function(done) {
+  it("if splitLocations=true, it parses a .gb file with joined features (aka a single feature with multiple locations) and splits them into multiple individaul features", done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/genbank/RTO4_16460_joined_feature.gb"),
       "utf8"
     );
     genbankToJson(
       string,
-      function(result) {
+      result => {
         result.should.be.an("array");
         result[0].success.should.be.true;
         result[0].parsedSequence.features.length.should.equal(12);
@@ -663,12 +663,12 @@ ORIGIN
       { splitLocations: true }
     );
   });
-  it("parses a .gb file with tags on parts", function(done) {
+  it("parses a .gb file with tags on parts", done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/genbank/gbFileWithTagsOnParts.gb"),
       "utf8"
     );
-    genbankToJson(string, function(result) {
+    genbankToJson(string, result => {
       result.should.be.an("array");
       result[0].success.should.be.true;
       result[0].parsedSequence.parts.should.include.something.that.deep.equals({
@@ -698,12 +698,12 @@ ORIGIN
       done();
     });
   });
-  it("parses a .gb file with tags on parts, adding parts", function(done) {
+  it("parses a .gb file with tags on parts, adding parts", done => {
     const string = fs.readFileSync(
       path.join(__dirname, "./testData/genbank/gbFileWithTagsOnParts.gb"),
       "utf8"
     );
-    genbankToJson(string, function(result) {
+    genbankToJson(string, result => {
       result.should.be.an("array");
       result[0].success.should.be.true;
       result[0].parsedSequence.features.should.not.include.something.that.deep.equals(
@@ -740,34 +740,34 @@ ORIGIN
 // const string = fs.readFileSync(__dirname + '/testGenbankFile.gb', "utf8");
 
 // const string = fs.readFileSync(path.join(__dirname, '../../../..', './testData/genbank (JBEI Private)/46.gb'), "utf8");
-// genbankToJson(string, function(result) {
+// genbankToJson(string, result => {
 //     assert.equal(result[0].parsedSequence.name, 'CYP106A2__AdR__A');
 //     // assert.equal(result[0].parsedSequence.name, 'CYP106A2__AdR__A'); //names are currently parsed to remove "special characters"
 //     assert.equal(result[0].parsedSequence.circular, true);
 //     assert.equal(result[0].parsedSequence.extraLines.length, 7);
 //     assert.equal(result[0].parsedSequence.features.length, 38);
-//     assert(result[0].parsedSequence.features.filter(function(feature) {
+//     assert(result[0].parsedSequence.features.filter(feature => {
 //         //tnrtodo: add testing of note's parsing
 //         //and add more features, not just 1
 //         if (feature.name === 'origin' && feature.start === 388 && feature.end === 3884 && feature.type === 'origin' && feature.strand === 1) {
 //             return true;
 //         }
 //     }).length);
-//     assert(result[0].parsedSequence.features.filter(function(feature) {
+//     assert(result[0].parsedSequence.features.filter(feature => {
 //         //tnrtodo: add testing of note's parsing
 //         //and add more features, not just 1
 //         if (feature.name === 'T7 promoter' && feature.start === 51 && feature.end === 536 && feature.type === 'promoter' && feature.strand === -1) {
 //             return true;
 //         }
 //     }).length);
-//     assert(result[0].parsedSequence.features.filter(function(feature) {
+//     assert(result[0].parsedSequence.features.filter(feature => {
 //         //tnrtodo: add testing of note's parsing
 //         //and add more features, not just 1
 //         if (feature.name === 'RBS' && feature.start === 672 && feature.end === 6729 && feature.type === 'protein_bind' && feature.strand === -1) {
 //             return true;
 //         }
 //     }).length);
-//     assert(result[0].parsedSequence.features.filter(function(feature) {
+//     assert(result[0].parsedSequence.features.filter(feature => {
 //         //tnrtodo: add testing of note's parsing
 //         //and add more features, not just 1
 //         if (feature.name === 'RBS' && feature.start === 2 && feature.end === 122 && feature.type === 'protein_bind' && feature.strand === -1) {

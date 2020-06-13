@@ -1,5 +1,5 @@
 const ParserUtil = {};
-ParserUtil.postProcessGenbankFeature = function(feat) {
+ParserUtil.postProcessGenbankFeature = feat => {
 	let name = null;
 	let nameIndex = null;
 
@@ -80,7 +80,7 @@ ParserUtil.postProcessGenbankFeature = function(feat) {
  * @param {string} name Name of a attribute or qualifier
  * @return {boolean} isALabel
  */
-ParserUtil.isAGenbankFeatureLabel = function(name) {
+ParserUtil.isAGenbankFeatureLabel = name => {
 	if (name === "label" || name === "name" || name === "ApEinfo_label" ||
 		name === "note" || name === "gene" || name === "organism" || name === "locus_tag") {
 

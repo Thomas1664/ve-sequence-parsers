@@ -198,7 +198,7 @@ const snapgeneToJson = require('bio-parsers/parsers/snapgeneToJson');
 
 //file can be either a browser file  <input type="file" id="input" multiple onchange="snapgeneToJson(this.files[0])">
 // or a node file snapgeneToJson(fs.readFileSync(path.join(__dirname, './testData/ab1/example1.ab1')));
-snapgeneToJson(file, function(result) { 
+snapgeneToJson(file, result => { 
   console.info(result)
 }, options)
 ```
@@ -211,7 +211,7 @@ const genbankToJson = require('bio-parsers').genbankToJson;
 //or alternatively (if using the package on the front end and you want to keep memory usage low)
 const genbankToJson = require('bio-parsers/parsers/genbankToJson');
 
-genbankToJson(string, function(result) {
+genbankToJson(string, result => {
   console.info(result)
   // [
   //     {
