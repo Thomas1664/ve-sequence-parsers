@@ -110,7 +110,7 @@ async function anyToJson(fileContentStringOrFileObj, onFileParsed, options) {
     function onFileParsedWrapped(resultArray) {
       if (successfulParsing(resultArray)) {
         //continue on to through the normal flow
-        resultArray.forEach(function(result) {
+        resultArray.forEach(result => {
           result.messages.push("Parsed using " + parser.name + ".");
         });
         onFileParsed(resultArray);
@@ -137,7 +137,7 @@ async function anyToJson(fileContentStringOrFileObj, onFileParsed, options) {
 
   //helper function to determine whether or not the parsing was successful or not
   function successfulParsing(resultArray) {
-    return resultArray.some(function(result) {
+    return resultArray.some(result => {
       return result.success;
     });
   }

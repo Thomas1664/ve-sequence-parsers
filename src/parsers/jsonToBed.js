@@ -15,7 +15,7 @@ function jsonToBed(jsonSequence, options = {}) {
   let outString = "";
   outString += `track name="${sequenceNameToUse}" description="${name} Annotations" itemRgb="On"\n`;
 
-  features.forEach(function(feat) {
+  features.forEach(feat => {
     const { start, end, name, type, forward, strand } = feat;
     const label = name ? name : type;
     let orientation;

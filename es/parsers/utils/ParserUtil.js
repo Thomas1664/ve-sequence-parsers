@@ -72,8 +72,8 @@ ParserUtil.postProcessGenbankFeature = function (feat) {
 
 /**
  * isAFeatureLabel
- * @param  name Name of a attribute or qualifier
- * @return  isALabel
+ * @param {string} name Name of a attribute or qualifier
+ * @return {boolean} isALabel
  */
 ParserUtil.isAGenbankFeatureLabel = function (name) {
 	if (name === "label" || name === "name" || name === "ApEinfo_label" || name === "note" || name === "gene" || name === "organism" || name === "locus_tag") {

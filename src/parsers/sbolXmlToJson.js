@@ -15,7 +15,7 @@ import addPromiseOption from './utils/addPromiseOption';
 // }
 function sbolXmlToJson(string, onFileParsedUnwrapped, options) {
     options = options || {}
-    const onFileParsed = function(sequences) { //before we call the onFileParsed callback, we need to validate the sequence
+    const onFileParsed = sequences => { //before we call the onFileParsed callback, we need to validate the sequence
         onFileParsedUnwrapped(validateSequenceArray(sequences, options));
     };
     let response = {
@@ -24,7 +24,7 @@ function sbolXmlToJson(string, onFileParsedUnwrapped, options) {
         success: true
     };
     try {
-      parseString(string, function(err, result) {
+      parseString(string, (err, result) => {
         if (err) {
             onFileParsed({
                 success: false,
@@ -92,14 +92,14 @@ function parseSbolJson(sbolJson, options) {
         circular: false,
         sequence: access(sbolJson, 'dnaSequence[0].DnaSequence[0].nucleotides'),
         name: name,
-        features: flatmap(sbolJson.annotation, function(annotation) {
+        features: flatmap(sbolJson.annotation, annotation => {
             const feature = access(annotation, 'SequenceAnnotation[0]');
             if (feature) {
                 const notes = waldo.byName('ns2:about', feature);
                 const otherNotes = waldo.byName('ns2:resource', feature);
                 notes.push.apply(notes, otherNotes);
                 const newNotes = {};
-                notes.forEach(function(note) {
+                notes.forEach(note => {
                     if (newNotes[note.prop]) {
                         newNotes[note.prop].push(note.value);
                     } else {

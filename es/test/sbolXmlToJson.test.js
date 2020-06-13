@@ -5,11 +5,11 @@ import chai from 'chai';
 chai.use(require('chai-things'));
 chai.should();
 
-describe('sbolXmlToJson', function() {
-    it('should parse an sbol xml file to our json representation correctly', function(done) {
+describe('sbolXmlToJson', () => {
+    it('should parse an sbol xml file to our json representation correctly', done => {
         // var string = fs.readFileSync(path.join(__dirname, '../ext_tests/data/sequences/pBbE0c-RFP.xml'), "utf8");
         const string = fs.readFileSync(path.join(__dirname, './testData/pBbE0c-RFP.xml'), "utf8");
-        sbolXmlToJson(string, function(result) {
+        sbolXmlToJson(string, result => {
             result[0].parsedSequence.name.should.equal('pBbE0c-RFP');
             result[0].parsedSequence.circular.should.equal(false);
             result[0].parsedSequence.extraLines.length.should.equal(0);
@@ -31,9 +31,9 @@ describe('sbolXmlToJson', function() {
             done();
         });
     });
-    it('should return an error (not throw an error) when trying to parse a genbank string', function(done) {
+    it('should return an error (not throw an error) when trying to parse a genbank string', done => {
       const string = fs.readFileSync(path.join(__dirname, './testData/genbank/genbankThatBrokeSbolImport.gb'), "utf8");
-      sbolXmlToJson(string, function(results) {
+      sbolXmlToJson(string, results => {
           results[0].success.should.equal(false)
           done();
       });
@@ -42,7 +42,7 @@ describe('sbolXmlToJson', function() {
 // describe('test of sbol from SBOL site', function (done) {
 //     it('tests the parsing of toggle switches', function (done) {
 //         var string = fs.readFileSync(path.join(__dirname, './testData/Sbol Website/pIKE_pTAK_toggle_switches.xml'), "utf8");
-//         (string, function(result){
+//         (string, result =>{
 //         });
 //     });
 // });
@@ -52,7 +52,7 @@ describe('sbolXmlToJson', function() {
 //     assert.equal(result[0].parsedSequence.circular, false);
 //     assert.equal(result[0].parsedSequence.extraLines, null);
 //     assert.equal(result[0].parsedSequence.features.length, 1);
-//     assert(result[0].parsedSequence.features.filter(function(feature) {
+//     assert(result[0].parsedSequence.features.filter(feature => {
 //         //tnrtodo: add testing of note's parsing
 //         //and add more features, not just 1
 //         if (feature.name === 'signal_peptide' && feature.start === 0 && feature.end === 63 && feature.type === 'CDS' && feature.strand === 1) {
@@ -68,7 +68,7 @@ describe('sbolXmlToJson', function() {
 //     assert.equal(result[0].parsedSequence.circular, false);
 //     assert.equal(result[0].parsedSequence.extraLines, null);
 //     assert.equal(result[0].parsedSequence.features.length, 13);
-//     assert(result[0].parsedSequence.features.filter(function(feature) {
+//     assert(result[0].parsedSequence.features.filter(feature => {
 //         //tnrtodo: add testing of note's parsing
 //         //and add more features, not just 1
 //         if (feature.name === 'pBAD\\promoter' && feature.start === 1160 && feature.end === 1187 && feature.type === 'misc_feature' && feature.strand === 1) { //there is a little bit of weirdness here with the xml2js conversion adding an extra \ character
@@ -84,7 +84,7 @@ describe('sbolXmlToJson', function() {
 //     assert.equal(result[0].parsedSequence.circular, false);
 //     assert.equal(result[0].parsedSequence.extraLines, null);
 //     assert.equal(result[0].parsedSequence.features.length, 13);
-//     assert(result[0].parsedSequence.features.filter(function(feature) {
+//     assert(result[0].parsedSequence.features.filter(feature => {
 //         //tnrtodo: add testing of note's parsing
 //         //and add more features, not just 1
 //         if (feature.name === 'pBAD\\promoter' && feature.start === 1160 && feature.end === 1187 && feature.type === 'misc_feature' && feature.strand === 1) { //there is a little bit of weirdness here with the xml2js conversion adding an extra \ character
