@@ -67,7 +67,7 @@ function genbankToJson(string, onFileParsedUnwrapped, options) {
   let featureLocationIndentation;
   try {
     const lines = splitStringIntoLines(string);
-    let LINETYPE = false;
+    let LINETYPE = null;
 
     if (lines === null) {
       addMessage("Import Error: Sequence file is empty");
